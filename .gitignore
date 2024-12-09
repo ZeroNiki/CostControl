@@ -1,0 +1,51 @@
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.pyo
+*.pyd
+*.swp
+*.swo
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+*.sqlite3
+/static/
+media/
+
+# Environments
+.dev-env
+.env.*
+.venv
+venv/
+venv.bak/
+ENV/
+env/
+env.bak/
+
+# Jupyter Notebooks
+.ipynb_checkpoints
+
+# MySQL/MariaDB
+*.sql
+*.db
+
+# Coverage reports
+.coverage
+.coverage.*
+nosetests.xml
+pytest.xml
+tox.ini
+*.cover
+
+# Django migrations
+/migrations/
+
+# Django static files
+/staticfiles/
+
