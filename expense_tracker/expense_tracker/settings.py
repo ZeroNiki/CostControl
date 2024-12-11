@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'expenses',
     'rest_framework',
-    'drf_yasg'
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -90,10 +90,18 @@ DATABASES = {
 
 # REST framework settings
 REST_FRAMEWORK = {
+  'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
   'DEFAULT_AUTHENTICATION_CLASSES': (
       'rest_framework_simplejwt.authentication.JWTAuthentication',
   ),
   'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
+
+# Docs
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API docs',
+    'DESCRIPTION': 'API documentation',
+    'VERSION': '1.0.0',
 }
 
 # Password validation
