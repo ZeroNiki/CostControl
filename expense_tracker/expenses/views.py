@@ -1,6 +1,10 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
 from .models import Category, Transaction
-from .serializers import CategorySerializers, TransactionSerializers 
+from .serializers import CategorySerializers, TransactionSerializers, UserRegistrationSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -27,3 +31,19 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class UserRegistrationViewSet(APIView):
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+
+        if serializer.is_valid():
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                "Message": "User registered successfully!",
+                "Refresh": str(refresh),
+                "Access": str(refresh.access_token),
+            }, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -45,6 +45,7 @@ tox.ini
 
 # Django migrations
 /migrations/
+expense_tracker/expenses/migrations/
 
 # Django static files
 /staticfiles/
