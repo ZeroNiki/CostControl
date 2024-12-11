@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from django_filters.rest_framework import DjangoFilterBackend
+
 from .models import Category, Transaction
 from .serializers import CategorySerializers, TransactionSerializers, UserRegistrationSerializer
 
@@ -24,6 +26,8 @@ class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
     serializer_class = TransactionSerializers 
     permission_classes = [permissions.IsAuthenticated]
+    filter_backends = [DjangoFilterBackend] 
+    filter_fields = ["category", "date"]
 
 
     def get_queryset(self):

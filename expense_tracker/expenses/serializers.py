@@ -7,7 +7,7 @@ from .models import Category, Transaction
 class CategorySerializers(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'category', 'created_at']
+        fields = ['id', 'name', 'created_at']
 
 
 class TransactionSerializers(serializers.ModelSerializer):
