@@ -46,7 +46,8 @@ Make sure the `.env` contains the correct details to connect to your PostgreSQL 
 
 ### Applying Migrations
 ```sh
-python manage.py migrate
+python3 manage.py makemigrations
+python3 manage.py migrate 
 ```
 ### Run server
 ```
