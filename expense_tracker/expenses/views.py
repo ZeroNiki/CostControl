@@ -4,12 +4,16 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from drf_spectacular.utils import extend_schema 
- 
+from drf_spectacular.utils import extend_schema
+
 from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Category, Transaction
-from .serializers import CategorySerializers, TransactionSerializers, UserRegistrationSerializer
+from .serializers import (
+    CategorySerializers,
+    TransactionSerializers,
+    UserRegistrationSerializer,
+)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -25,12 +29,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all()
-    serializer_class = TransactionSerializers 
+    serializer_class = TransactionSerializers
     permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend] 
+    filter_backends = [DjangoFilterBackend]
     filter_fields = ["category", "date"]
 
     def get_queryset(self):
@@ -47,7 +50,7 @@ class UserRegistrationViewSet(APIView):
         request=UserRegistrationSerializer,
         responses={201: UserRegistrationSerializer},
         description="Register a new user",
-        tags=["Authentication"]
+        tags=["Authentication"],
     )
     def post(self, request):
         serializer = UserRegistrationSerializer(data=request.data)
@@ -55,10 +58,13 @@ class UserRegistrationViewSet(APIView):
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
-            return Response({
-                "Message": "User registered successfully!",
-                "Refresh": str(refresh),
-                "Access": str(refresh.access_token),
-            }, status=status.HTTP_201_CREATED)
+            return Response(
+                {
+                    "Message": "User registered successfully!",
+                    "Refresh": str(refresh),
+                    "Access": str(refresh.access_token),
+                },
+                status=status.HTTP_201_CREATED,
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
