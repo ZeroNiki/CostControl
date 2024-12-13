@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
+from rest_framework import serializers
 
 from .models import Category, Transaction
 
@@ -13,7 +13,14 @@ class CategorySerializers(serializers.ModelSerializer):
 class TransactionSerializers(serializers.ModelSerializer):
     class Meta:
         model = Transaction
-        fields = ["id", "category", "amount", "description", "date", "created_at"]
+        fields = [
+            "id",
+            "category",
+            "amount",
+            "description",
+            "date",
+            "created_at",
+        ]
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -26,7 +33,9 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         if data["password"] != data["password_confirm"]:
-            raise serializers.ValidationError({"password": "password do not match."})
+            raise serializers.ValidationError(
+                {"password": "password do not match."}
+            )
 
         return data
 

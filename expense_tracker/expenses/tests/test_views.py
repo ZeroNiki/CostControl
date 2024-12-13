@@ -1,6 +1,5 @@
-from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
-
+from django.test import Client, TestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -8,7 +7,9 @@ class CategoryViewSetTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="testuser@example.com", password="testpass"
+            username="testuser",
+            email="testuser@example.com",
+            password="testpass",
         )
 
         self.refresh = RefreshToken.for_user(self.user)
@@ -26,7 +27,9 @@ class TransactionViewSetTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="testuser@example.com", password="testpass"
+            username="testuser",
+            email="testuser@example.com",
+            password="testpass",
         )
 
         self.refresh = RefreshToken.for_user(self.user)

@@ -1,17 +1,17 @@
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from expenses.models import Category
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
-
-from django.utils import timezone
-from django.contrib.auth import get_user_model
-
-from expenses.models import Category
 
 
 class CategoryAPITest(APITestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="testuser@example.com", password="testpass"
+            username="testuser",
+            email="testuser@example.com",
+            password="testpass",
         )
 
         self.refresh = RefreshToken.for_user(self.user)
@@ -30,9 +30,13 @@ class CategoryAPITest(APITestCase):
 class TransactionAPITest(APITestCase):
     def setUp(self):
         self.user = get_user_model().objects.create_user(
-            username="testuser", email="testuser@example.com", password="testpass"
+            username="testuser",
+            email="testuser@example.com",
+            password="testpass",
         )
-        self.category = Category.objects.create(name="Transport", user=self.user)
+        self.category = Category.objects.create(
+            name="Transport", user=self.user
+        )
 
         self.refresh = RefreshToken.for_user(self.user)
         self.access_token = str(self.refresh.access_token)

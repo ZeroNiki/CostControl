@@ -1,19 +1,14 @@
-from rest_framework import viewsets, permissions, status
+from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
+from rest_framework import permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
-
-from drf_spectacular.utils import extend_schema
-
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Category, Transaction
-from .serializers import (
-    CategorySerializers,
-    TransactionSerializers,
-    UserRegistrationSerializer,
-)
+from .serializers import (CategorySerializers, TransactionSerializers,
+                          UserRegistrationSerializer)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -22,7 +17,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
     authentication_classes = [JWTAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get_queryset(self):
+    def get_queryset(self):  # type: ignore
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
@@ -36,7 +31,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filter_fields = ["category", "date"]
 
-    def get_queryset(self):
+    def get_queryset(self):  # type: ignore
         return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
@@ -44,7 +39,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
 
 
 class UserRegistrationViewSet(APIView):
-    permission_classes = [permissions.AllowAny]  # Доступ для всех пользователей
+    permission_classes = [
+        permissions.AllowAny
+    ]  # Доступ для всех пользователей
 
     @extend_schema(
         request=UserRegistrationSerializer,
@@ -57,12 +54,12 @@ class UserRegistrationViewSet(APIView):
 
         if serializer.is_valid():
             user = serializer.save()
-            refresh = RefreshToken.for_user(user)
+            refresh = RefreshToken.for_user(user)  # type: ignore
             return Response(
                 {
                     "Message": "User registered successfully!",
                     "Refresh": str(refresh),
-                    "Access": str(refresh.access_token),
+                    "Access": str(refresh.access_token),  # type: ignore
                 },
                 status=status.HTTP_201_CREATED,
             )

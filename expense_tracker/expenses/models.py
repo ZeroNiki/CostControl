@@ -1,10 +1,12 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="categories")
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="categories"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -28,6 +30,5 @@ class Transaction(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return (
-            f"{self.amount} - {self.category.name if self.category else 'No Category'}"
-        )
+        category_name = self.category.name if self.category else "No Category"
+        return f"{self.amount} - {category_name}"
